@@ -6,7 +6,7 @@ import React from 'react';
 
 const SORT_FIELD_LENGTH = 'length';
 const SORT_FIELD_ALPHABETICALLY = 'alphabetically';
-const SORT_FIELD_REVERSE = 'reverse';
+const SORT_FIELD_REVERSE = false;
 
 export const goodsFromServer = [
   'Dumplings',
@@ -23,7 +23,7 @@ export const goodsFromServer = [
 
 function getPreparedGoods(
   goods: string[],
-  { sortField, reverse }: { sortField: string; reverse: string },
+  { sortField, reverse }: { sortField: string; reverse: boolean },
 ) {
   const prepareGoods = [...goods];
 
@@ -49,7 +49,7 @@ function getPreparedGoods(
 
 export const App: React.FC = () => {
   const [sortField, setSortField] = useState('');
-  const [reverse, setReverse] = useState('');
+  const [reverse, setReverse] = useState(false);
   const visibleGood = getPreparedGoods(goodsFromServer, { sortField, reverse });
 
   return (
@@ -77,11 +77,13 @@ export const App: React.FC = () => {
 
         <button
           onClick={() =>
-            setReverse(reverse === SORT_FIELD_REVERSE ? '' : SORT_FIELD_REVERSE)
+            setReverse(
+              reverse === SORT_FIELD_REVERSE ? true : SORT_FIELD_REVERSE,
+            )
           }
           type="button"
           className={cn('button', 'is-warning', {
-            'is-light': reverse !== SORT_FIELD_REVERSE,
+            'is-light': reverse === SORT_FIELD_REVERSE,
           })}
         >
           Reverse
@@ -91,7 +93,7 @@ export const App: React.FC = () => {
           <button
             onClick={() => {
               setSortField('');
-              setReverse('');
+              setReverse(false);
             }}
             type="button"
             className="button is-danger is-light"
